@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Jackpot Game</title>
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-top: 80px;
+        }
+
+        h1 {
+            color: gold;
+            font-size: 42px;
+        }
+
+        .slots {
+            font-size: 70px;
+            margin: 30px;
+        }
+
+        button {
+            font-size: 24px;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 12px;
+            background-color: gold;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 32px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎰 잭팟 게임 🎰</h1>
+
+    <p>SPIN 버튼을 눌러 잭팟에 도전하세요!</p>
+
+    <div class="slots" id="slots">❔ ❔ ❔</div>
+
+    <button onclick="spin()">SPIN</button>
+
+    <h3 id="result"></h3>
+
+    <script>
+        function spin() {
+            fetch("/spin")
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("slots").innerText = data.slots.join(" ");
+
+                if (data.jackpot) {
+                    document.getElementById("result").innerText = "🎉 JACKPOT! 🎉";
+                } else {
+                    document.getElementById("result").innerText = "TRY AGAIN!";
+                }
+            })
+            .catch(() => {
+                document.getElementById("result").innerText = "에러 발생";
+            });
+        }
+    </script>
+</body>
+</html>
