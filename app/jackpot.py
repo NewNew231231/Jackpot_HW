@@ -9,4 +9,17 @@ symbols = ["🍒", "🍋", "⭐", "💎", "7️⃣"]
 def spin_jackpot():
     logger.info("spin_jackpot 함수 시작")
 
-    raise ValueError("테스트용 잭팟 에러 발생")
+    result = [
+        random.choice(symbols),
+        random.choice(symbols),
+        random.choice(symbols)
+    ]
+
+    jackpot = result[0] == result[1] == result[2]
+
+    if jackpot:
+        logger.info(f"JACKPOT 성공: result={result}")
+    else:
+        logger.info(f"JACKPOT 실패: result={result}")
+
+    return result, jackpot

@@ -9,3 +9,25 @@ Traceback (most recent call last):
     raise ValueError("테스트용 잭팟 에러 발생")
 ValueError: 테스트용 잭팟 에러 발생
 [2026-06-22 01:53:43,251] [WARNING] [root] - GH_REPO/GH_TOKEN not set; skipping GitHub issue creation.
+[2026-06-22 01:58:18,990] [INFO] [root] - GET /spin 요청 - 잭팟 게임 실행
+[2026-06-22 01:58:18,992] [INFO] [app.jackpot] - spin_jackpot 함수 시작
+[2026-06-22 01:58:18,993] [ERROR] [root] - FAIL /spin | error=ValueError: 테스트용 잭팟 에러 발생
+Traceback (most recent call last):
+  File "C:\Users\World\Downloads\jackpot\app\main.py", line 49, in spin
+    result, jackpot = spin_jackpot()
+                      ~~~~~~~~~~~~^^
+  File "C:\Users\World\Downloads\jackpot\app\jackpot.py", line 12, in spin_jackpot
+    raise ValueError("테스트용 잭팟 에러 발생")
+ValueError: 테스트용 잭팟 에러 발생
+[2026-06-22 01:58:19,002] [WARNING] [root] - GH_REPO/GH_TOKEN not set; skipping GitHub issue creation.
+[2026-06-22 02:07:06,936] [INFO] [root] - GET /spin 요청 - 잭팟 게임 실행
+[2026-06-22 02:07:06,938] [INFO] [app.jackpot] - spin_jackpot 함수 시작
+[2026-06-22 02:07:06,939] [ERROR] [root] - FAIL /spin | error=ValueError: 테스트용 잭팟 에러 발생
+Traceback (most recent call last):
+  File "C:\Users\World\Downloads\jackpot\app\main.py", line 49, in spin
+    result, jackpot = spin_jackpot()
+                      ~~~~~~~~~~~~^^
+  File "C:\Users\World\Downloads\jackpot\app\jackpot.py", line 12, in spin_jackpot
+    raise ValueError("테스트용 잭팟 에러 발생")
+ValueError: 테스트용 잭팟 에러 발생
+[2026-06-22 02:07:06,951] [WARNING] [root] - GH_REPO/GH_TOKEN not set; skipping GitHub issue creation.
