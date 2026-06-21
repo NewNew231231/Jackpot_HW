@@ -1,0 +1,11 @@
+[2026-06-22 01:53:43,214] [INFO] [root] - GET /spin 요청 - 잭팟 게임 실행
+[2026-06-22 01:53:43,226] [INFO] [app.jackpot] - spin_jackpot 함수 시작
+[2026-06-22 01:53:43,230] [ERROR] [root] - FAIL /spin | error=ValueError: 테스트용 잭팟 에러 발생
+Traceback (most recent call last):
+  File "C:\Users\World\Downloads\jackpot\app\main.py", line 49, in spin
+    result, jackpot = spin_jackpot()
+                      ~~~~~~~~~~~~^^
+  File "C:\Users\World\Downloads\jackpot\app\jackpot.py", line 12, in spin_jackpot
+    raise ValueError("테스트용 잭팟 에러 발생")
+ValueError: 테스트용 잭팟 에러 발생
+[2026-06-22 01:53:43,251] [WARNING] [root] - GH_REPO/GH_TOKEN not set; skipping GitHub issue creation.

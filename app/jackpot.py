@@ -1,14 +1,12 @@
 import random
+import logging
+
+logger = logging.getLogger(__name__)
 
 symbols = ["🍒", "🍋", "⭐", "💎", "7️⃣"]
 
+
 def spin_jackpot():
-    result = [
-        random.choice(symbols),
-        random.choice(symbols),
-        random.choice(symbols)
-    ]
+    logger.info("spin_jackpot 함수 시작")
 
-    jackpot = result[0] == result[1] == result[2]
-
-    return result, jackpot
+    raise ValueError("테스트용 잭팟 에러 발생")
