@@ -3,15 +3,14 @@ import random
 import pandas as pd
 import mlflow
 
+from app.config import MLFLOW_TRACKING_URI, TRIAL_COUNT, SYMBOLS
+
 
 BASE_DIR = os.path.dirname(__file__)
 ARTIFACT_DIR = os.path.join(BASE_DIR, "artifacts")
 RESULT_PATH = os.path.join(ARTIFACT_DIR, "jackpot_result.csv")
 
 os.makedirs(ARTIFACT_DIR, exist_ok=True)
-
-
-SYMBOLS = ["🍒", "🍋", "⭐", "💎", "7️⃣"]
 
 
 def spin_jackpot():
@@ -26,15 +25,12 @@ def spin_jackpot():
     return result, jackpot
 
 
-TRIAL_COUNT = 100
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+mlflow.set_experiment("jackpot-simulation-ngrok")
 
 
-mlflow.set_tracking_uri("sqlite:///mlflow.db")
-mlflow.set_experiment("jackpot-simulation-local")
-
-
-with mlflow.start_run():
-    mlflow.log_param("project_type", "jackpot-game")
+with mlflow.start_run(run_name="jackpot_simulation"):
+    mlflow.log_param("project", "jackpot")
     mlflow.log_param("symbol_count", len(SYMBOLS))
     mlflow.log_param("trial_count", TRIAL_COUNT)
 
@@ -59,7 +55,12 @@ with mlflow.start_run():
     jackpot_rate = jackpot_count / TRIAL_COUNT
 
     df = pd.DataFrame(records)
-    df.to_csv(RESULT_PATH, index=False, encoding="utf-8-sig")
+
+    df.to_csv(
+        RESULT_PATH,
+        index=False,
+        encoding="utf-8-sig"
+    )
 
     mlflow.log_metric("jackpot_count", jackpot_count)
     mlflow.log_metric("fail_count", fail_count)
