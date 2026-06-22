@@ -2,8 +2,18 @@ import os
 import random
 import pandas as pd
 import mlflow
+import mlflow.pyfunc
 
-from app.config import MLFLOW_TRACKING_URI, TRIAL_COUNT, SYMBOLS
+from mlflow.tracking import MlflowClient
+
+from app.config import (
+    MLFLOW_TRACKING_URI,
+    REGISTERED_MODEL_NAME,
+    TRIAL_COUNT,
+    SYMBOLS
+)
+
+from ml.model_promoter import promote_if_better
 
 
 BASE_DIR = os.path.dirname(__file__)
@@ -11,6 +21,11 @@ ARTIFACT_DIR = os.path.join(BASE_DIR, "artifacts")
 RESULT_PATH = os.path.join(ARTIFACT_DIR, "jackpot_result.csv")
 
 os.makedirs(ARTIFACT_DIR, exist_ok=True)
+
+
+class JackpotDummyModel(mlflow.pyfunc.PythonModel):
+    def predict(self, context, model_input):
+        return ["jackpot-simulation"] * len(model_input)
 
 
 def spin_jackpot():
@@ -26,10 +41,12 @@ def spin_jackpot():
 
 
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-mlflow.set_experiment("jackpot-simulation-ngrok")
+mlflow.set_experiment("jackpot-operation")
 
 
-with mlflow.start_run(run_name="jackpot_simulation"):
+client = MlflowClient()
+
+with mlflow.start_run(run_name="jackpot_simulation") as run:
     mlflow.log_param("project", "jackpot")
     mlflow.log_param("symbol_count", len(SYMBOLS))
     mlflow.log_param("trial_count", TRIAL_COUNT)
@@ -67,6 +84,26 @@ with mlflow.start_run(run_name="jackpot_simulation"):
     mlflow.log_metric("jackpot_rate", jackpot_rate)
 
     mlflow.log_artifact(RESULT_PATH)
+
+    mlflow.pyfunc.log_model(
+        artifact_path="model",
+        python_model=JackpotDummyModel(),
+        registered_model_name=REGISTERED_MODEL_NAME
+    )
+
+    latest_versions = client.search_model_versions(
+        f"name='{REGISTERED_MODEL_NAME}'"
+    )
+
+    latest_version = max(
+        latest_versions,
+        key=lambda v: int(v.version)
+    ).version
+
+    promote_if_better(
+        latest_version,
+        jackpot_rate
+    )
 
     print(f"Result saved to: {RESULT_PATH}")
     print(f"jackpot_count: {jackpot_count}")
